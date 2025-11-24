@@ -7,7 +7,7 @@ const VideoControls = {
         const currentUrl = window.location.href;
         const isVideoPage = currentUrl.includes("lecture");
 
-        // Remove existing controls
+        // Remove existing video controls to avoid duplicates
         const speedContainer = document.querySelector(".speed-control-container");
         const screenshotContainer = document.querySelector(".screenshot-container");
         if (speedContainer) speedContainer.remove();
@@ -53,8 +53,6 @@ const VideoControls = {
             }
         }, "-2s");
 
-        container.appendChild(buttonGroup);
-        container.appendChild(rewindButton);
         container.appendChild(buttonGroup);
         container.appendChild(rewindButton);
         Utils.getOrCreatePanel().appendChild(container);

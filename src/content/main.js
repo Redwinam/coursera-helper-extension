@@ -22,8 +22,9 @@ const handleUrlChange = (newUrl) => {
     if (newUrl !== lastUrl.current) {
         lastUrl.current = newUrl;
         console.log("URL changed, re-initializing controls");
+        // Re-initialize all controls to ensure consistent order
         if (window.VideoControls) window.VideoControls.init();
-        if (window.ContentControls) window.ContentControls.updateSubtitleButtonText();
+        if (window.ContentControls) window.ContentControls.init();
         if (window.QuizControls) window.QuizControls.initButtons();
     }
 };
