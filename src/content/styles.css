@@ -1,0 +1,290 @@
+/* Global Variables & Glassmorphism */
+:root {
+  --coursera-blue: #0056d2;
+  --coursera-blue-hover: #00419e;
+  --accent-orange: #ff9800;
+  --accent-orange-hover: #f57c00;
+  --bg-glass: rgba(255, 255, 255, 0.9);
+  --shadow-glass: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --border-glass: 1px solid rgba(255, 255, 255, 0.3);
+  --text-primary: #333;
+  --text-secondary: #666;
+}
+
+/* General Button Styles */
+.coursera-helper-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(5px);
+  box-shadow: var(--shadow-glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.coursera-helper-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.coursera-helper-btn:active {
+  transform: translateY(0);
+}
+
+/* Main Panel Container */
+.coursera-helper-panel {
+  position: fixed;
+  bottom: 60px;
+  right: 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+  z-index: 9000;
+}
+
+/* Speed Control Container */
+.speed-control-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: var(--bg-glass);
+  padding: 3px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-glass);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.speed-btn {
+  padding: 4px 8px;
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.speed-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--coursera-blue);
+}
+
+.speed-btn.active {
+  background-color: var(--coursera-blue);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 86, 210, 0.3);
+}
+
+.rewind-btn {
+  margin-left: 6px;
+  padding: 4px 12px;
+  background-color: #f5f5f5;
+  color: var(--text-secondary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rewind-btn:hover {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+/* Screenshot & Crop Controls */
+.screenshot-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+label {
+  margin-bottom: 0 !important;
+}
+
+.crop-toggle-label {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.crop-input {
+  width: 32px;
+  padding: 6px 4px;
+  border: 1px solid #ddd;
+  font-size: 12px;
+  text-align: center;
+  outline: none;
+  background: white;
+  transition: all 0.2s;
+}
+
+.crop-inputs-group {
+  display: flex;
+  align-items: center;
+}
+
+.crop-inputs-group .crop-input:first-child {
+  border-right: none;
+  border-radius: 6px 0 0 6px;
+}
+
+.crop-inputs-group .crop-input:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+.crop-inputs-group .crop-input:focus {
+  border-color: var(--coursera-blue);
+  z-index: 1;
+  position: relative;
+}
+
+.crop-input:focus {
+  border-color: var(--coursera-blue);
+}
+
+.screenshot-btn {
+  background-color: var(--accent-orange);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.screenshot-btn:hover {
+  background-color: var(--accent-orange-hover);
+}
+
+/* Title Copy Button */
+.title-copy-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.title-copy-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.title-copy-btn:hover {
+  background-color: #218838;
+}
+
+/* Subtitle Copy Button */
+.coursera-subtitle-btn {
+  background-color: var(--coursera-blue);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-glass);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coursera-subtitle-btn:hover {
+  background-color: var(--coursera-blue-hover);
+}
+
+/* Quiz Buttons */
+.quiz-btn {
+  padding: 10px 20px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  cursor: pointer;
+  box-shadow: var(--shadow-glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quiz-btn:hover {
+  background-color: #1976d2;
+}
+
+.question-copy-btn {
+  position: absolute;
+  right: -35px;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  background-color: #f0f4f8;
+  color: var(--coursera-blue);
+  border: 1px solid #d1e3f8;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  opacity: 0.6;
+}
+
+.question-copy-btn:hover {
+  opacity: 1;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: scale(1.1);
+}
+
+/* Inline Subtitle Copy */
+.subtitle-copy-btn {
+  margin-left: 10px;
+  padding: 2px 8px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  transition: all 0.2s;
+}
+
+.subtitle-copy-btn:hover {
+  opacity: 1;
+  border-color: var(--coursera-blue);
+  color: var(--coursera-blue);
+}
+
+/* Quiz Feedback Styles */
+.quiz-correct {
+  background-color: #e8f5e9 !important;
+  border: 1px solid #a5d6a7 !important;
+}
+
+.quiz-incorrect {
+  background-color: #ffebee !important;
+  border: 1px solid #ffcdd2 !important;
+}

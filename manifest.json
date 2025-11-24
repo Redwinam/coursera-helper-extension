@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "Coursera 学习助手",
+  "version": "1.0",
+  "description": "提升 Coursera 学习体验：视频倍速控制、字幕复制、截图工具、测验答案保存等功能。",
+  "permissions": [
+    "storage",
+    "clipboardWrite",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://*.coursera.org/*"
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.coursera.org/*"],
+      "css": ["src/content/styles.css"],
+      "js": [
+        "src/content/utils.js",
+        "src/content/video.js",
+        "src/content/content.js",
+        "src/content/quiz.js",
+        "src/content/main.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*.png"],
+      "matches": ["*://*.coursera.org/*"]
+    }
+  ]
+}

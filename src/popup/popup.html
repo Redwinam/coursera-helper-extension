@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coursera 助手设置</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Coursera 助手</h1>
+      <p>提升您的学习体验</p>
+    </header>
+    
+    <main>
+      <div class="setting-item">
+        <div class="setting-info">
+          <span class="setting-title">视频控制</span>
+          <span class="setting-desc">倍速控制 & 截图工具</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="video-toggle" checked>
+          <span class="slider round"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-info">
+          <span class="setting-title">内容复制</span>
+          <span class="setting-desc">复制标题 & 字幕</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="content-toggle" checked>
+          <span class="slider round"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-info">
+          <span class="setting-title">测验助手</span>
+          <span class="setting-desc">保存 & 加载答案</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="quiz-toggle" checked>
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </main>
+
+    <footer>
+      <a href="#" id="reset-settings">恢复默认</a>
+      <span class="version">v1.0</span>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
