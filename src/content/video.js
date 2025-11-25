@@ -48,7 +48,7 @@ const VideoControls = {
                 const video = document.querySelector("video");
                 if (video) {
                     video.currentTime = Math.max(0, video.currentTime - 2);
-                    // video.pause(); // Optional: pause on rewind? Original script did this.
+                    video.pause();
                 }
             }
         }, "-2s");
