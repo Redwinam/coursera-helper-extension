@@ -110,11 +110,8 @@ const ContentControls = {
                             document.querySelector("h1.cds-Typography-base") ||
                             document.querySelector("h1");
                         if (titleElem) {
-                            let titleText = titleElem.innerText || titleElem.textContent || "";
-                            if (titleText.includes("\n")) {
-                                titleText = titleText.split("\n")[0];
-                            }
-                            contentToCopy = `<h1>${titleText}</h1>` + contentToCopy;
+                            const titleHTML = titleElem.innerHTML || titleElem.textContent || "";
+                            contentToCopy = `<h1>${titleHTML}</h1>` + contentToCopy;
                         }
                     }
 

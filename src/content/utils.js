@@ -10,7 +10,9 @@ const Utils = {
     if (isHTML) {
       try {
         const blob = new Blob([content], { type: "text/html" });
-        const plainText = content.replace(/<[^>]*>/g, "");
+        const temp = document.createElement("div");
+        temp.innerHTML = content;
+        const plainText = temp.innerText;
         const data = [
           new ClipboardItem({
             "text/html": blob,
@@ -20,7 +22,9 @@ const Utils = {
         await navigator.clipboard.write(data);
       } catch (error) {
         console.error("HTML Copy failed, falling back to plain text:", error);
-        Utils.fallbackCopy(content.replace(/<[^>]*>/g, ""));
+        const temp = document.createElement("div");
+        temp.innerHTML = content;
+        Utils.fallbackCopy(temp.innerText);
       }
     } else {
       Utils.fallbackCopy(content);
