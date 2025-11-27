@@ -32,7 +32,7 @@ const VideoControls = {
                 toggleBtn.textContent = isCollapsed ? "«" : "»";
                 toggleBtn.title = isCollapsed ? "展开更多" : "收起";
             }
-        }, "»");
+        }, "«");
         toggleBtn.title = "展开更多";
         buttonGroup.appendChild(toggleBtn);
 
