@@ -21,13 +21,28 @@ const VideoControls = {
     },
 
     addSpeedControl: () => {
-        const container = Utils.createElement("div", { className: "speed-control-container" });
-        const buttonGroup = Utils.createElement("div", { style: { display: "flex" } });
+        const container = Utils.createElement("div", { className: "speed-control-container collapsed" });
+        const buttonGroup = Utils.createElement("div", { style: { display: "flex", alignItems: "center" } });
 
-        const speeds = [1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3];
-        speeds.forEach((speed) => {
+        const toggleBtn = Utils.createElement("button", {
+            className: "speed-toggle-btn",
+            onclick: () => {
+                container.classList.toggle("collapsed");
+                const isCollapsed = container.classList.contains("collapsed");
+                toggleBtn.textContent = isCollapsed ? "»" : "«";
+                toggleBtn.title = isCollapsed ? "展开更多" : "收起";
+            }
+        }, "»");
+        toggleBtn.title = "展开更多";
+        buttonGroup.appendChild(toggleBtn);
+
+        const allSpeeds = [1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3];
+        const defaultSpeeds = [1.25, 2, 2.5, 3];
+
+        allSpeeds.forEach((speed) => {
+            const isDefault = defaultSpeeds.includes(speed);
             const button = Utils.createElement("button", {
-                className: "speed-btn",
+                className: `speed-btn ${isDefault ? "" : "speed-btn-extra"}`,
                 onclick: () => {
                     const video = document.querySelector("video");
                     if (video) {

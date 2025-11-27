@@ -102,6 +102,28 @@
   color: #333;
 }
 
+.speed-control-container.collapsed .speed-btn-extra {
+  display: none;
+}
+
+.speed-toggle-btn {
+  padding: 4px 8px;
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  font-weight: 500;
+  margin-right: 2px;
+}
+
+.speed-toggle-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--coursera-blue);
+}
+
 /* Screenshot & Crop Controls */
 .screenshot-container {
   display: flex;
