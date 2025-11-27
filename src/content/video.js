@@ -29,7 +29,7 @@ const VideoControls = {
             onclick: () => {
                 container.classList.toggle("collapsed");
                 const isCollapsed = container.classList.contains("collapsed");
-                toggleBtn.textContent = isCollapsed ? "»" : "«";
+                toggleBtn.textContent = isCollapsed ? "«" : "»";
                 toggleBtn.title = isCollapsed ? "展开更多" : "收起";
             }
         }, "»");
