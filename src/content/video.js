@@ -67,15 +67,14 @@ const VideoControls = {
             style: { marginRight: "4px" }
         });
 
-        // Load saved state
-        chrome.storage.local.get(['courseraCropEnable', 'courseraCropTop', 'courseraCropHeight'], (result) => {
+        Utils.safeStorageGet(['courseraCropEnable', 'courseraCropTop', 'courseraCropHeight'], (result) => {
             cropToggle.checked = result.courseraCropEnable !== undefined ? result.courseraCropEnable : true;
             if (result.courseraCropTop) cropTopInput.value = result.courseraCropTop;
             if (result.courseraCropHeight) cropHeightInput.value = result.courseraCropHeight;
         });
 
         cropToggle.addEventListener("change", function () {
-            chrome.storage.local.set({ courseraCropEnable: this.checked });
+            Utils.safeStorageSet({ courseraCropEnable: this.checked });
         });
 
         cropToggleLabel.appendChild(cropToggle);
@@ -86,13 +85,13 @@ const VideoControls = {
         const cropTopInput = Utils.createElement("input", {
             className: "crop-input",
             placeholder: "上",
-            onchange: function () { chrome.storage.local.set({ courseraCropTop: this.value }); }
+            onchange: function () { Utils.safeStorageSet({ courseraCropTop: this.value }); }
         });
 
         const cropHeightInput = Utils.createElement("input", {
             className: "crop-input",
             placeholder: "下",
-            onchange: function () { chrome.storage.local.set({ courseraCropHeight: this.value }); }
+            onchange: function () { Utils.safeStorageSet({ courseraCropHeight: this.value }); }
         });
 
         cropInputsGroup.appendChild(cropTopInput);

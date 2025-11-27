@@ -106,6 +106,43 @@ const Utils = {
       document.body.appendChild(panel);
     }
     return panel;
+  },
+  isExtensionContextValid: () => {
+    return typeof chrome !== "undefined" && chrome.runtime && !!chrome.runtime.id;
+  },
+  safeStorageGet: (keys, callback) => {
+    try {
+      if (Utils.isExtensionContextValid() && chrome.storage && chrome.storage.local) {
+        chrome.storage.local.get(keys, (result) => {
+          try {
+            callback(result || {});
+          } catch (_) {}
+        });
+        return;
+      }
+    } catch (_) {}
+    try {
+      setTimeout(() => {
+        try { callback({}); } catch (_) {}
+      }, 0);
+    } catch (_) {}
+  },
+  safeStorageSet: (obj, callback) => {
+    try {
+      if (Utils.isExtensionContextValid() && chrome.storage && chrome.storage.local) {
+        chrome.storage.local.set(obj, () => {
+          try {
+            if (callback) callback();
+          } catch (_) {}
+        });
+        return;
+      }
+    } catch (_) {}
+    try {
+      setTimeout(() => {
+        try { if (callback) callback(); } catch (_) {}
+      }, 0);
+    } catch (_) {}
   }
 };
 
