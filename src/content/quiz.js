@@ -38,10 +38,30 @@ const QuizControls = {
                         if (isSingleChoice) {
                             isCorrect = isSelected && overallHasCorrectIcon;
                         } else {
-                            const optionRow = optionElement.closest(".css-1f00xev") || optionElement.parentElement;
-                            const optionFeedback = optionRow?.nextElementSibling;
-                            const hasOptionCorrect = !!optionFeedback?.querySelector('[data-testid="icon-correct"]');
-                            const hasOptionIncorrect = !!optionFeedback?.querySelector('[data-testid="icon-incorrect"]');
+                            // Try to find feedback relative to the option
+                            // Check inside the option element first
+                            let hasOptionCorrect = !!optionElement.querySelector('[data-testid="icon-correct"]');
+                            let hasOptionIncorrect = !!optionElement.querySelector('[data-testid="icon-incorrect"]');
+
+                            if (!hasOptionCorrect && !hasOptionIncorrect) {
+                                // Check immediate sibling (common pattern: Option -> Feedback)
+                                const sibling = optionElement.nextElementSibling;
+                                if (sibling && (sibling.querySelector('[data-testid="icon-correct"]') || sibling.querySelector('[data-testid="icon-incorrect"]'))) {
+                                    hasOptionCorrect = !!sibling.querySelector('[data-testid="icon-correct"]');
+                                    hasOptionIncorrect = !!sibling.querySelector('[data-testid="icon-incorrect"]');
+                                } else {
+                                    // Check parent's sibling (if option is wrapped in a div/label)
+                                    const parent = optionElement.parentElement;
+                                    if (parent) {
+                                        const parentSibling = parent.nextElementSibling;
+                                        if (parentSibling && (parentSibling.querySelector('[data-testid="icon-correct"]') || parentSibling.querySelector('[data-testid="icon-incorrect"]'))) {
+                                            hasOptionCorrect = !!parentSibling.querySelector('[data-testid="icon-correct"]');
+                                            hasOptionIncorrect = !!parentSibling.querySelector('[data-testid="icon-incorrect"]');
+                                        }
+                                    }
+                                }
+                            }
+
                             if (hasOptionCorrect || hasOptionIncorrect) {
                                 isCorrect = hasOptionCorrect;
                             } else {
@@ -115,18 +135,57 @@ const QuizControls = {
                 className: "quiz-btn quiz-save-btn",
                 style: { right: "20px" },
                 onclick: () => {
-                    const quizData = QuizControls.getQuizData();
-                    if (!quizData) return;
+                    const currentQuizData = QuizControls.getQuizData();
+                    if (!currentQuizData) return;
 
-                    try {
-                        // Using chrome.storage.local instead of localStorage
-                        chrome.storage.local.set({ courseraQuizData: JSON.stringify(quizData) }, () => {
+                    chrome.storage.local.get(['courseraQuizData'], (result) => {
+                        let finalQuizData = currentQuizData;
+                        
+                        if (result.courseraQuizData) {
+                            try {
+                                const existingQuizData = JSON.parse(result.courseraQuizData);
+                                
+                                // Initialize finalQuizData with existing data to preserve history
+                                finalQuizData = existingQuizData;
+
+                                // Merge current data into final data
+                                currentQuizData.questions.forEach(currQ => {
+                                    const existingQ = finalQuizData.questions.find(q => q.questionText === currQ.questionText);
+                                    
+                                    if (existingQ) {
+                                        // Update existing question options
+                                        currQ.options.forEach(currOpt => {
+                                            const existingOpt = existingQ.options.find(o => o.text === currOpt.text);
+                                            if (existingOpt) {
+                                                // If currently selected, update status
+                                                // We keep history: if it was ever selected, keep it selected.
+                                                // But we update isCorrect if we have new info.
+                                                if (currOpt.isSelected) {
+                                                    existingOpt.isSelected = true;
+                                                    existingOpt.isCorrect = currOpt.isCorrect;
+                                                }
+                                            } else {
+                                                // New option found (unlikely but possible)
+                                                existingQ.options.push(currOpt);
+                                            }
+                                        });
+                                    } else {
+                                        // New question found
+                                        finalQuizData.questions.push(currQ);
+                                    }
+                                });
+                                
+                                finalQuizData.totalQuestions = finalQuizData.questions.length;
+                            } catch (err) {
+                                console.error("Merge failed, overwriting:", err);
+                                finalQuizData = currentQuizData;
+                            }
+                        }
+
+                        chrome.storage.local.set({ courseraQuizData: JSON.stringify(finalQuizData) }, () => {
                             Utils.updateButtonText(saveButton, "保存答案", "已保存！");
                         });
-                    } catch (err) {
-                        console.error("Save failed:", err);
-                        Utils.updateButtonText(saveButton, "保存答案", "失败");
-                    }
+                    });
                 }
             }, "保存答案");
 
