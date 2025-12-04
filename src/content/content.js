@@ -5,7 +5,6 @@ const ContentControls = {
         console.log("Initializing Content Controls");
         ContentControls.addTitleCopyButton();
         ContentControls.addSubtitleCopyButton();
-        ContentControls.updateSubtitleButtonText();
         ContentControls.initSubtitleHeaderObserver();
     },
 
@@ -61,35 +60,34 @@ const ContentControls = {
         Utils.getOrCreatePanel().appendChild(container);
     },
 
-    updateSubtitleButtonText: () => {
-        const button = document.querySelector(".coursera-subtitle-btn");
-        if (button) {
-            const currentUrl = window.location.href;
-            const buttonText = currentUrl.includes("supplement") ? "复制内容" : "复制字幕";
-            button.textContent = buttonText;
-        }
-    },
-
     addSubtitleCopyButton: () => {
         const existing = document.querySelector(".coursera-subtitle-btn");
         if (existing) existing.remove();
 
-        // Only show on lecture pages
+        // Only show on lecture or supplement pages
         const currentUrl = window.location.href;
-        if (!currentUrl.includes("lecture")) {
+        const isLecture = currentUrl.includes("lecture");
+        const isSupplement = currentUrl.includes("supplement");
+
+        if (!isLecture && !isSupplement) {
             return;
         }
+
+        const buttonText = isSupplement ? "复制内容" : "复制字幕";
 
         const button = Utils.createElement("button", {
             className: "coursera-subtitle-btn",
             onclick: () => {
-                // Try to find transcript or reading content
-                let targetDiv =
-                    document.querySelector("#cds-react-aria-35-panel-TRANSCRIPT > div > div.cds-1.css-arowdh.cds-3.cds-grid-item.cds-48.cds-73 > div > div > div") ||
-                    document.querySelector("#cds-react-aria-90-panel-TRANSCRIPT > div > div.cds-1.css-arowdh.cds-3.cds-grid-item.cds-48.cds-73") ||
-                    document.querySelector(".rc-Transcript");
+                let targetDiv = null;
 
-                if (!targetDiv) {
+                if (isLecture) {
+                    // Only look for transcripts on lecture pages
+                    targetDiv =
+                        document.querySelector("#cds-react-aria-35-panel-TRANSCRIPT > div > div.cds-1.css-arowdh.cds-3.cds-grid-item.cds-48.cds-73 > div > div > div") ||
+                        document.querySelector("#cds-react-aria-90-panel-TRANSCRIPT > div > div.cds-1.css-arowdh.cds-3.cds-grid-item.cds-48.cds-73") ||
+                        document.querySelector(".rc-Transcript");
+                } else if (isSupplement) {
+                    // Only look for reading content on supplement pages
                     targetDiv = document.querySelector("div.rc-CML[dir='auto']");
                 }
 
@@ -127,7 +125,7 @@ const ContentControls = {
                     console.log("Subtitle/Content not found");
                 }
             }
-        }, "复制字幕");
+        }, buttonText);
 
         Utils.getOrCreatePanel().appendChild(button);
     },
