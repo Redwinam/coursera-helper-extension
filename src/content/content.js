@@ -74,6 +74,12 @@ const ContentControls = {
         const existing = document.querySelector(".coursera-subtitle-btn");
         if (existing) existing.remove();
 
+        // Only show on lecture pages
+        const currentUrl = window.location.href;
+        if (!currentUrl.includes("lecture")) {
+            return;
+        }
+
         const button = Utils.createElement("button", {
             className: "coursera-subtitle-btn",
             onclick: () => {
