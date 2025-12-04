@@ -82,12 +82,6 @@ const VideoControls = {
             style: { marginRight: "4px" }
         });
 
-        Utils.safeStorageGet(['courseraCropEnable', 'courseraCropTop', 'courseraCropHeight'], (result) => {
-            cropToggle.checked = result.courseraCropEnable !== undefined ? result.courseraCropEnable : true;
-            if (result.courseraCropTop) cropTopInput.value = result.courseraCropTop;
-            if (result.courseraCropHeight) cropHeightInput.value = result.courseraCropHeight;
-        });
-
         cropToggle.addEventListener("change", function () {
             Utils.safeStorageSet({ courseraCropEnable: this.checked });
         });
@@ -100,13 +94,19 @@ const VideoControls = {
         const cropTopInput = Utils.createElement("input", {
             className: "crop-input",
             placeholder: "上",
-            onchange: function () { Utils.safeStorageSet({ courseraCropTop: this.value }); }
+            oninput: function () { Utils.safeStorageSet({ courseraCropTop: this.value }); }
         });
 
         const cropHeightInput = Utils.createElement("input", {
             className: "crop-input",
             placeholder: "下",
-            onchange: function () { Utils.safeStorageSet({ courseraCropHeight: this.value }); }
+            oninput: function () { Utils.safeStorageSet({ courseraCropHeight: this.value }); }
+        });
+
+        Utils.safeStorageGet(['courseraCropEnable', 'courseraCropTop', 'courseraCropHeight'], (result) => {
+            cropToggle.checked = result.courseraCropEnable !== undefined ? result.courseraCropEnable : true;
+            if (result.courseraCropTop) cropTopInput.value = result.courseraCropTop;
+            if (result.courseraCropHeight) cropHeightInput.value = result.courseraCropHeight;
         });
 
         cropInputsGroup.appendChild(cropTopInput);
