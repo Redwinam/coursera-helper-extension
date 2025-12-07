@@ -5,7 +5,84 @@ const ContentControls = {
         console.log("Initializing Content Controls");
         ContentControls.addTitleCopyButton();
         ContentControls.addSubtitleCopyButton();
+        ContentControls.addDirectoryCopyButton();
         ContentControls.initSubtitleHeaderObserver();
+    },
+
+    addDirectoryCopyButton: () => {
+        const existing = document.querySelector(".directory-copy-btn");
+        if (existing) existing.remove();
+
+        // Only show on module pages
+        if (!window.location.href.includes("/home/module/")) {
+            return;
+        }
+
+        const button = Utils.createElement("button", {
+            className: "coursera-subtitle-btn directory-copy-btn", // Reusing style
+            style: { backgroundColor: "#9c27b0" }, // Purple color
+            onclick: () => {
+                const modules = document.querySelectorAll(".cds-AccordionRoot-container.cds-AccordionRoot-standard");
+                let text = "";
+
+                // Extract Module/Week number from URL
+                const urlMatch = window.location.href.match(/(?:module|week)\/(\d+)/);
+                const moduleNumber = urlMatch ? urlMatch[1] : "";
+
+                if (modules.length === 0) {
+                    // Fallback logic remains same
+                    console.log("No modules found");
+                }
+
+                modules.forEach((module, index) => {
+                    const moduleTitleElement = module.querySelector(".cds-AccordionHeader-labelGroup .css-6ecy9b");
+                    let moduleTitle = moduleTitleElement ? moduleTitleElement.innerText : "Unknown Module";
+                    
+                    // Prepend Module Number to the first module title
+                    if (index === 0 && moduleNumber) {
+                        moduleTitle = `Module ${moduleNumber} ${moduleTitle}`;
+                    }
+                    
+                    text += `${moduleTitle}\n`;
+
+                    const sections = module.querySelectorAll(".cds-AccordionRoot-container.cds-AccordionRoot-silent");
+                    
+                    if (sections.length === 0) {
+                        // Maybe direct items under module?
+                        const items = module.querySelectorAll(".rc-NamedItemListRefresh li");
+                        items.forEach((item) => {
+                            const itemTitleElement = item.querySelector('p[data-test="rc-ItemName"]');
+                            const itemTitle = itemTitleElement ? itemTitleElement.innerText : "Unknown Item";
+                            text += `  - ${itemTitle}\n`;
+                        });
+                    } else {
+                        sections.forEach((section) => {
+                            const sectionTitleElement = section.querySelector(".cds-AccordionHeader-labelGroup .css-6ecy9b");
+                            const sectionTitle = sectionTitleElement ? sectionTitleElement.innerText : "Unknown Section";
+                            text += `  - ${sectionTitle}\n`;
+
+                            const items = section.querySelectorAll(".rc-NamedItemListRefresh li");
+                            items.forEach((item) => {
+                                const itemTitleElement = item.querySelector('p[data-test="rc-ItemName"]');
+                                const itemTitle = itemTitleElement ? itemTitleElement.innerText : "Unknown Item";
+                                text += `    - ${itemTitle}\n`;
+                            });
+                        });
+                    }
+                    text += "\n";
+                });
+
+                if (text.trim()) {
+                    Utils.copyToClipboard(text, false);
+                    Utils.updateButtonText(button, "复制目录");
+                } else {
+                    console.log("No directory content found");
+                    Utils.updateButtonText(button, "复制目录", "未找到内容");
+                }
+            }
+        }, "复制目录");
+
+        Utils.getOrCreatePanel().appendChild(button);
     },
 
     addTitleCopyButton: () => {
