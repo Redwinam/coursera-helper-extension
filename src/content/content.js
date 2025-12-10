@@ -10,20 +10,42 @@ const ContentControls = {
     },
 
     addDirectoryCopyButton: () => {
-        const existing = document.querySelector(".directory-copy-btn");
-        if (existing) existing.remove();
+        const existingContainer = document.querySelector(".directory-copy-container");
+        if (existingContainer) existingContainer.remove();
+        
+        // Remove legacy button if it exists
+        const legacyBtn = document.querySelector(".directory-copy-btn");
+        if (legacyBtn && !legacyBtn.closest(".directory-copy-container")) {
+            legacyBtn.remove();
+        }
 
         // Only show on module pages
         if (!window.location.href.includes("/home/module/")) {
             return;
         }
 
+        const container = Utils.createElement("div", { className: "directory-copy-container" });
+
+        const toggleLabel = Utils.createElement("label", {
+            style: { display: "flex", alignItems: "center", fontSize: "12px", cursor: "pointer", marginBottom: "4px" }
+        });
+
+        const toggle = Utils.createElement("input", {
+            type: "checkbox",
+            checked: false,
+            style: { marginRight: "4px" }
+        });
+
+        toggleLabel.appendChild(toggle);
+        toggleLabel.appendChild(document.createTextNode("标题模式"));
+
         const button = Utils.createElement("button", {
             className: "coursera-subtitle-btn directory-copy-btn", // Reusing style
-            style: { backgroundColor: "#9c27b0" }, // Purple color
+            style: { backgroundColor: "#673AB7" }, // Better purple
             onclick: () => {
                 const modules = document.querySelectorAll(".cds-AccordionRoot-container.cds-AccordionRoot-standard");
                 let text = "";
+                const isHeadingMode = toggle.checked;
 
                 // Extract Module/Week number from URL
                 const urlMatch = window.location.href.match(/(?:module|week)\/(\d+)/);
@@ -43,7 +65,11 @@ const ContentControls = {
                         moduleTitle = `Module ${moduleNumber} ${moduleTitle}`;
                     }
                     
-                    text += `${moduleTitle}\n`;
+                    if (isHeadingMode) {
+                        text += `<h2>${moduleTitle}</h2>\n`;
+                    } else {
+                        text += `${moduleTitle}\n`;
+                    }
 
                     const sections = module.querySelectorAll(".cds-AccordionRoot-container.cds-AccordionRoot-silent");
                     
@@ -53,27 +79,41 @@ const ContentControls = {
                         items.forEach((item) => {
                             const itemTitleElement = item.querySelector('p[data-test="rc-ItemName"]');
                             const itemTitle = itemTitleElement ? itemTitleElement.innerText : "Unknown Item";
-                            text += `  - ${itemTitle}\n`;
+                            if (isHeadingMode) {
+                                text += `<h1>${itemTitle}</h1>\n`;
+                            } else {
+                                text += `  - ${itemTitle}\n`;
+                            }
                         });
                     } else {
                         sections.forEach((section) => {
                             const sectionTitleElement = section.querySelector(".cds-AccordionHeader-labelGroup .css-6ecy9b");
                             const sectionTitle = sectionTitleElement ? sectionTitleElement.innerText : "Unknown Section";
-                            text += `  - ${sectionTitle}\n`;
+                            if (isHeadingMode) {
+                                text += `<h3>${sectionTitle}</h3>\n`;
+                            } else {
+                                text += `  - ${sectionTitle}\n`;
+                            }
 
                             const items = section.querySelectorAll(".rc-NamedItemListRefresh li");
                             items.forEach((item) => {
                                 const itemTitleElement = item.querySelector('p[data-test="rc-ItemName"]');
                                 const itemTitle = itemTitleElement ? itemTitleElement.innerText : "Unknown Item";
-                                text += `    - ${itemTitle}\n`;
+                                if (isHeadingMode) {
+                                    text += `<h1>${itemTitle}</h1>\n`;
+                                } else {
+                                    text += `    - ${itemTitle}\n`;
+                                }
                             });
                         });
                     }
-                    text += "\n";
+                    if (!isHeadingMode) {
+                        text += "\n";
+                    }
                 });
 
                 if (text.trim()) {
-                    Utils.copyToClipboard(text, false);
+                    Utils.copyToClipboard(text, isHeadingMode);
                     Utils.updateButtonText(button, "复制目录");
                 } else {
                     console.log("No directory content found");
@@ -82,7 +122,9 @@ const ContentControls = {
             }
         }, "复制目录");
 
-        Utils.getOrCreatePanel().appendChild(button);
+        container.appendChild(toggleLabel);
+        container.appendChild(button);
+        Utils.getOrCreatePanel().appendChild(container);
     },
 
     addTitleCopyButton: () => {
