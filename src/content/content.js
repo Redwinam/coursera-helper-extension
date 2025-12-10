@@ -24,10 +24,13 @@ const ContentControls = {
             return;
         }
 
-        const container = Utils.createElement("div", { className: "directory-copy-container" });
+        const container = Utils.createElement("div", { 
+            className: "directory-copy-container",
+            style: { display: "flex", alignItems: "center", gap: "8px" }
+        });
 
         const toggleLabel = Utils.createElement("label", {
-            style: { display: "flex", alignItems: "center", fontSize: "12px", cursor: "pointer", marginBottom: "4px" }
+            style: { display: "flex", alignItems: "center", fontSize: "12px", cursor: "pointer" }
         });
 
         const toggle = Utils.createElement("input", {
@@ -41,7 +44,7 @@ const ContentControls = {
 
         const button = Utils.createElement("button", {
             className: "coursera-subtitle-btn directory-copy-btn", // Reusing style
-            style: { backgroundColor: "#673AB7" }, // Better purple
+            style: { backgroundColor: "#009688" }, // Teal color
             onclick: () => {
                 const modules = document.querySelectorAll(".cds-AccordionRoot-container.cds-AccordionRoot-standard");
                 let text = "";
