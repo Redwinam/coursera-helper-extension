@@ -44,7 +44,7 @@ const ContentControls = {
 
         const button = Utils.createElement("button", {
             className: "coursera-subtitle-btn directory-copy-btn", // Reusing style
-            style: { backgroundColor: "#009688" }, // Teal color
+            style: { backgroundColor: "#8E24AA" }, // Material Design Purple 600 - Rich and elegant
             onclick: () => {
                 const modules = document.querySelectorAll(".cds-AccordionRoot-container.cds-AccordionRoot-standard");
                 let text = "";
