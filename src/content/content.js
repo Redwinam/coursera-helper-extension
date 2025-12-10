@@ -36,7 +36,18 @@ const ContentControls = {
         const toggle = Utils.createElement("input", {
             type: "checkbox",
             checked: false,
-            style: { marginRight: "4px" }
+            style: { marginRight: "4px" },
+            onchange: (e) => {
+                // Save state
+                chrome.storage.local.set({ 'directory_heading_mode': e.target.checked });
+            }
+        });
+
+        // Load saved state
+        chrome.storage.local.get(['directory_heading_mode'], (result) => {
+            if (result.directory_heading_mode !== undefined) {
+                toggle.checked = result.directory_heading_mode;
+            }
         });
 
         toggleLabel.appendChild(toggle);
@@ -44,7 +55,7 @@ const ContentControls = {
 
         const button = Utils.createElement("button", {
             className: "coursera-subtitle-btn directory-copy-btn", // Reusing style
-            style: { backgroundColor: "#8E24AA" }, // Material Design Purple 600 - Rich and elegant
+            style: { backgroundColor: "#7986CB" }, // Indigo 300 - A beautiful, soft blue-purple (Periwinkle)
             onclick: () => {
                 const modules = document.querySelectorAll(".cds-AccordionRoot-container.cds-AccordionRoot-standard");
                 let text = "";
