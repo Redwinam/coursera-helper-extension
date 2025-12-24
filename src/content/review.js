@@ -4,6 +4,11 @@ const ReviewControls = {
     init: () => {
         console.log("Initializing Review Controls");
         const currentUrl = window.location.href;
+        
+        // Remove existing button first to avoid persistence on wrong pages
+        const existingBtn = document.querySelector(".review-grade-btn");
+        if (existingBtn) existingBtn.remove();
+
         // Check for review pages (specifically review-next as requested)
         if (currentUrl.includes("review-next")) {
             ReviewControls.addGradingButton();
