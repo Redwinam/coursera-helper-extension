@@ -13,6 +13,7 @@ const initApp = () => {
     if (window.VideoControls) window.VideoControls.init();
     if (window.ContentControls) window.ContentControls.init();
     if (window.QuizControls) window.QuizControls.init();
+    if (window.ReviewControls) window.ReviewControls.init();
 };
 
 // URL Change Handler
@@ -26,6 +27,7 @@ const handleUrlChange = (newUrl) => {
         if (window.VideoControls) window.VideoControls.init();
         if (window.ContentControls) window.ContentControls.init();
         if (window.QuizControls) window.QuizControls.initButtons();
+        if (window.ReviewControls) window.ReviewControls.init();
     }
 };
 
