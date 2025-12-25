@@ -282,22 +282,48 @@ label {
 
 /* Inline Subtitle Copy */
 .subtitle-copy-btn {
-  margin-left: 10px;
-  padding: 2px 8px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  margin-left: 8px !important;
+  padding: 4px 8px !important;
+  background-color: transparent !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
   cursor: pointer;
-  font-size: 11px;
-  color: var(--text-secondary);
-  opacity: 0.5;
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+  color: var(--text-secondary) !important;
+  opacity: 0.7;
   transition: all 0.2s;
+  height: auto !important;
+  min-height: unset !important;
+  width: auto !important;
+  min-width: unset !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  font-weight: normal !important;
+  box-shadow: none !important;
 }
 
 .subtitle-copy-btn:hover {
   opacity: 1;
-  border-color: var(--coursera-blue);
-  color: var(--coursera-blue);
+  border-color: var(--coursera-blue) !important;
+  color: var(--coursera-blue) !important;
+  background-color: rgba(0, 86, 210, 0.05) !important;
+}
+
+/* Ensure the header container aligns items correctly to prevent wrapping */
+.rc-ModuleSection .cds-AccordionHeader-labelGroup {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+}
+
+/* Allow the title to shrink if needed, but preferably stay visible */
+.rc-ModuleSection .cds-AccordionHeader-labelGroup .css-6ecy9b {
+  flex: 0 1 auto;
+  min-width: 0; /* Allows flex item to shrink below content size if needed */
+  margin-right: 0 !important; /* Reset any margin that might push the button */
 }
 
 /* Quiz Feedback Styles */
