@@ -25,9 +25,30 @@ const ReviewControls = {
             className: "review-grade-container",
             style: { 
                 display: "flex", 
-                flexDirection: "row", 
-                gap: "8px", 
+                flexDirection: "column", 
+                gap: "4px", 
                 marginBottom: "8px" 
+            }
+        });
+
+        const buttonRow = Utils.createElement("div", {
+            style: { 
+                display: "flex", 
+                flexDirection: "row", 
+                gap: "8px" 
+            }
+        });
+
+        const statusDiv = Utils.createElement("div", {
+            className: "review-status-msg",
+            style: { 
+                fontSize: "12px", 
+                color: "#666", 
+                textAlign: "center", 
+                minHeight: "16px", 
+                lineHeight: "16px",
+                transition: "opacity 0.3s",
+                opacity: "0"
             }
         });
 
@@ -55,8 +76,10 @@ const ReviewControls = {
             }
         }, "一键零分");
 
-        container.appendChild(maxButton);
-        container.appendChild(minButton);
+        buttonRow.appendChild(maxButton);
+        buttonRow.appendChild(minButton);
+        container.appendChild(buttonRow);
+        container.appendChild(statusDiv);
         Utils.getOrCreatePanel().appendChild(container);
     },
 
@@ -135,15 +158,23 @@ const ReviewControls = {
             }
         });
 
-        const btnClass = mode === "max" ? ".review-grade-btn-max" : ".review-grade-btn-min";
-        const button = document.querySelector(btnClass);
-        if (button) {
-            const originalText = mode === "max" ? "一键满分" : "一键零分";
+        const statusDiv = document.querySelector(".review-status-msg");
+        if (statusDiv) {
+            let msg = "";
             if (count > 0 || textCount > 0) {
-                Utils.updateButtonText(button, originalText, `已评 ${count} 题，填 ${textCount} 处`);
+                msg = `已评 ${count} 题，填 ${textCount} 处`;
             } else {
-                Utils.updateButtonText(button, originalText, "未找到题目");
+                msg = "未找到题目";
             }
+            
+            statusDiv.textContent = msg;
+            statusDiv.style.opacity = "1";
+
+            // Clear status after 3 seconds
+            if (statusDiv.timeoutId) clearTimeout(statusDiv.timeoutId);
+            statusDiv.timeoutId = setTimeout(() => {
+                statusDiv.style.opacity = "0";
+            }, 3000);
         }
     }
 };
